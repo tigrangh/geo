@@ -23,7 +23,7 @@ Then we can configure traccar.xml like this
 </properties>
 ```
 
-With this, traccar will send a request to Geo, which in turn will process the towers one by one and send a request to unwiredlabs.com or in case of failure fall back to googleapis.com, according to geo.ini configuration. Geo will try to be smart and cache each tower information, and if something unexpected happens, it will fall back to dumb proxy mode, simply to route the Traccar's raw request to unwiredlabs.com. This is why `UNWIRED_KEY` appears both in traccar.xml and in geo.ini.
+With this, Traccar will send a request to Geo, which in turn will process the towers one by one and send a request to unwiredlabs.com or in case of failure fall back to googleapis.com, according to geo.ini configuration. Geo will try to be smart and cache each tower information, and if something unexpected happens, it will fall back to dumb proxy mode, simply to route the Traccar's raw request to unwiredlabs.com. This is why `UNWIRED_KEY` appears both in traccar.xml and in geo.ini.
 
 The cache is collected in geo.db SQLite DB.  
 Geo also mimicks triangulation to some extent.
