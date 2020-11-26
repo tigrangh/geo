@@ -1,5 +1,5 @@
 # Geo
-Geo is a small http server intended to serve geolocation api requests originating from [Traccar](https://www.traccar.org "Traccar Homepage") server.
+Geo is a small http server intended to serve geolocation API requests originating from [Traccar](https://www.traccar.org "Traccar Homepage") server.
 
 Since the big geolocation APIs either cost money or rate limit the requests, Geo is here to handle the requests from Traccar and to cache gsm tower information received from Google Cloud or Unwired Labs APIs. Later, when the cache is sufficient the requests are handled locally by Geo only.
 
