@@ -3,7 +3,7 @@ Geo is a small http server intended to serve geolocation API requests originatin
 
 Since the big geolocation APIs either cost money or rate limit the requests, Geo is here to handle the requests from Traccar and to cache gsm tower information received from Google Cloud or Unwired Labs APIs. Later, when the cache is sufficient the requests are handled locally by Geo only.
 
-Geo configuration file, geo.ini, in addition to couple more settings, can configure the following
+Geo configuration file, geo.ini, in addition to couple more settings, can specify the following
 * network interface, for example 'localhost',
 * the port such as 8118, 
 * Google geolocation API url - https://www.googleapis.com/geolocation/v1/geolocate?key=GCLOUD_API_KEY
