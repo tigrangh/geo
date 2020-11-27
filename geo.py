@@ -1,6 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from io import BytesIO
-import requests, json, enum, time
+import requests, json, enum, time, math
 import configparser
 import sqlite3
 
@@ -238,17 +238,34 @@ def processInput(input, config, persistence):
     if not all_locations:
         raise Exception('got no locations during processing')
 
+    weight_coefficient = 1000
+
+    all_accuracy = 0
     all_signalStrength = 0
+    all_Weight = 0
     for location in all_locations:
+        accuracy = max(location['accuracy'], 1)
+        weight = location['signalStrength'] * weight_coefficient / accuracy
+        all_accuracy += accuracy
         all_signalStrength += location['signalStrength']
+        all_Weight += weight
 
     print('locations count: {}'.format(len(all_locations)))
+    print('average accuracy: {}'.format(all_accuracy / len(all_locations)))
     print('average signal strength: {}'.format(all_signalStrength / len(all_locations)))
+    print('average weight: {}'.format(all_Weight / len(all_locations)))
 
-    for location in all_locations:
-        mean_location['location']['lat'] += location['location']['lat'] / all_signalStrength * location['signalStrength']
-        mean_location['location']['lng'] += location['location']['lng'] / all_signalStrength * location['signalStrength']
-        mean_location['accuracy'] += location['accuracy'] / all_signalStrength * location['signalStrength'] / len(all_locations)
+    if 0 == all_Weight:
+        mean_location['location']['lat'] = all_locations[0]['location']['lat']
+        mean_location['location']['lng'] = all_locations[0]['location']['lng']
+        mean_location['accuracy'] = all_locations[0]['accuracy']
+    else:
+        for location in all_locations:
+            accuracy = max(location['accuracy'], 1)
+            weight = location['signalStrength'] * weight_coefficient / accuracy
+            mean_location['location']['lat'] += location['location']['lat'] / all_Weight * weight
+            mean_location['location']['lng'] += location['location']['lng'] / all_Weight * weight
+            mean_location['accuracy'] += location['accuracy'] / all_Weight * weight / math.sqrt(len(all_locations))
     
     if config.responseType == ResponseType.universal:
         responseBody = json.dumps(mean_location)
